@@ -5,7 +5,9 @@ import 'package:flutter_sound/flutter_sound.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:intl/intl.dart'; // For timestamp formatting
+import 'package:intl/intl.dart';
+
+import 'ocr.dart'; // For timestamp formatting
 
 void main() {
   runApp(const MyApp());
@@ -92,8 +94,7 @@ class _VoiceTranslatorState extends State<VoiceTranslator> {
     if (response.statusCode == 200) {
       final translatedText = await response.stream.bytesToString();
       _speakChinese(translatedText);
-    } else {
-    }
+    } else {}
   }
 
   // Record Chinese voice and save in .wav format
@@ -127,8 +128,7 @@ class _VoiceTranslatorState extends State<VoiceTranslator> {
     if (response.statusCode == 200) {
       final translatedText = await response.stream.bytesToString();
       _speakBangla(translatedText);
-    } else {
-    }
+    } else {}
   }
 
   // Text-to-Speech function to speak Bangla
@@ -160,6 +160,31 @@ class _VoiceTranslatorState extends State<VoiceTranslator> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        actions: [
+          Container(
+            height: 35,
+            margin: const EdgeInsets.only(right: 16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OCRScreen()),
+                );
+              },
+              child: const Text(
+                'OCR',
+                style: TextStyle(
+                  color: Color(0xff001f4d),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -177,7 +202,7 @@ class _VoiceTranslatorState extends State<VoiceTranslator> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  padding:const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: Colors.white, // Set the background color to white
                     borderRadius:
